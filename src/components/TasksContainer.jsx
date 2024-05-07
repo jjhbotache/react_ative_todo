@@ -1,20 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, Text, StyleSheet } from 'react-native';
 import Task from './Task';
 
-export default function TasksContainer() {
-  const tasks = [
-    { id: 1, name: 'Hacer ejercicio' },
-    { id: 2, name: 'Comprar comida' },
-    { id: 3, name: 'Leer un libro' },
-  ];
-
+export default function TasksContainer({tasks, onDeleteTask, onSaveTask}) {
+  console.log("TasksContainer", tasks);
   const handleSaveTask = (taskId, newName) => {
     console.log(`Guardar tarea con ID ${taskId} y nuevo nombre "${newName}"`);
+    onSaveTask(taskId, newName);
   };
 
   const handleDeleteTask = (taskId) => {
     console.log(`Eliminar tarea con ID ${taskId}`);
+    onDeleteTask(taskId);
   };
 
 
@@ -26,7 +23,7 @@ export default function TasksContainer() {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <Task
-            task={item}
+            task={item || "error with the name"}
             onSaveTask={handleSaveTask}
             onDeleteTask={handleDeleteTask}
           />
@@ -41,7 +38,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#333',
     alignItems: 'center',
     justifyContent: 'center',
-    maxHeight: 500,
+    height: 500,
     padding: 5,
     width: '100%',
   },
